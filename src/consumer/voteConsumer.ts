@@ -7,7 +7,6 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-// Ensure KAFKA_BROKER is defined
 if (!process.env.KAFKA_BROKER) {
   throw new Error("❌ KAFKA_BROKER is not set in the environment variables.");
 }
@@ -38,7 +37,7 @@ const runConsumer = async () => {
         const { optionId } = JSON.parse(message.value.toString());
         console.log(`🛠 Processing vote for option ID: ${optionId}`);
 
-        // Ensure the option exists in the database
+        
         const pollOption = await prisma.option.findUnique({
           where: { id: optionId },
           select: { pollId: true },
@@ -51,7 +50,7 @@ const runConsumer = async () => {
           return;
         }
 
-        // Update vote count in database
+        // Update vote count in db
         console.log(`🔄 Updating vote count for option ID: ${optionId}`);
         await prisma.option.update({
           where: { id: optionId },
@@ -59,7 +58,7 @@ const runConsumer = async () => {
         });
         console.log(`✅ Successfully incremented vote for ${optionId}`);
 
-        // Broadcast updated poll data
+        // Broadcast updated poll data (web sockets in use)
         broadcastPollUpdate(pollOption.pollId);
       } catch (error) {
         console.error("❌ Error processing Kafka message:", error);

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const voteOnPoll = async (req: Request, res: Response) : Promise<void> => {
   try {
     const { id } = req.params;
-    const { optionId } = req.body; // Keep as string
+    const { optionId } = req.body; 
 
     if (!optionId || typeof optionId !== "string") {
       res.status(400).json({ error: "Invalid option ID" });

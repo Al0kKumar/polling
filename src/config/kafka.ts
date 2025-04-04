@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Ensure KAFKA_BROKER is defined
+
 const kafkaBroker = process.env.KAFKA_BROKER;
 if (!kafkaBroker) {
   throw new Error("❌ KAFKA_BROKER is not set in the environment variables.");
@@ -19,9 +19,9 @@ const producer = kafka.producer();
 const connectProducer = async () => {
   try {
     await producer.connect();
-    console.log("✅ Kafka Producer connected");
+    console.log("Kafka Producer connected");
   } catch (error) {
-    console.error("❌ Failed to connect Kafka Producer:", error);
+    console.error("Failed to connect Kafka Producer:", error);
   }
 };
 
